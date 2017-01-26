@@ -32,7 +32,7 @@ public class Deque<Item> implements Iterable<Item> {
             queue = doubleArray(queue, head, tail);
         }
 
-        queue[head--] = item;
+        queue[--head] = item;
     }
 
     public void addLast(Item item)           // add the item to the end
@@ -129,7 +129,7 @@ public class Deque<Item> implements Iterable<Item> {
 
         public boolean hasNext(){ return current != tail; }
         public void remove(){}
-        public Item next(){ return queue[current++];}
+        public Item next(){ return queue[++current];}
     }
 
 //    private Item[] resetArray(Item[] array, int start, int end){

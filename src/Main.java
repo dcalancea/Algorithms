@@ -6,21 +6,26 @@ public class Main {
     public static void main(String[] args)   // test client (optional)
     {
         int count = Integer.parseInt(args[0]);
-        RandomizedQueue<String> randomQueue = new RandomizedQueue<>();
+        Deque<String> queue = new Deque<>();
 
         System.out.println("Please enter: " + count + " numbers: ");
         BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
         try {
 
             for (int i = 0; i < count; i++) {
-                randomQueue.enqueue(buffer.readLine());
+                queue.addFirst(buffer.readLine());
             }
         } catch (Exception e) {
 
         }
 
-        for (String i : randomQueue) {
-            System.out.print(i + " ");
+//        for (String i : randomQueue) {
+//            System.out.print(i + " ");
+//        }
+
+        for (int i = 0; i < count; i++) {
+            String element = queue.removeLast();
+            System.out.println(element);
         }
 
 

@@ -14,7 +14,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public boolean isEmpty()                 // is the queue empty?
     {
-        return size() < 0;
+        return size() <= 0;
     }
 
     public int size()                        // return the number of items on the queue
@@ -31,7 +31,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if(tail+1 == queue.length){
             queue = doubleArray(queue);
         }
-        queue[tail++] = item;
+        queue[++tail] = item;
     }
 
     public Item dequeue()                    // remove and return a random item
@@ -40,7 +40,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new java.util.NoSuchElementException();
         }
 
-        int removeId = uniform(tail);
+        int removeId = uniform(tail+1);
 
         Item removed = queue[removeId];
         if(tail != removeId) {
@@ -89,17 +89,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int newLength = array.length % 2 == 0 ? array.length/2 : array.length/2 + 1;
         Item[] newArray = (Item[])new Object[newLength];
 
-        for(int i=0; i < array.length; i++){
+        for(int i=0; i < size(); i++){
             newArray[i] = array[i];
         }
 
         return newArray;
     }
     private class RandomQueueIterator implements Iterator<Item>{
-        private int current = 0;
+        private int current = -1;
 
         public boolean hasNext(){ return current != tail; }
         public void remove(){}
-        public Item next(){ return queue[current++];}
+        public Item next(){ return queue[++current];}
     }
 }
