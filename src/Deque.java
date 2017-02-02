@@ -14,7 +14,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     public boolean isEmpty()                 // is the deque empty?
     {
-        return size() == 0;
+        return size() < 0;
     }
 
     public int size()                        // return the number of items on the deque
@@ -93,14 +93,14 @@ public class Deque<Item> implements Iterable<Item> {
     private Item[] doubleArray(Item[] array, int start, int end){
         Item[] newArray = (Item[])new Object[array.length*2];
 
-        int copyStart = (newArray.length - (end - start)) / 2 + 1;
+        int copyStart = (newArray.length - (end - start)) / 2;
         int copyOffset = copyStart - start;
-        for(int i=copyStart; i <= end - start; i++){
-            newArray[i] = array[start+copyOffset];
+        for(int i=copyStart; i <= end + copyOffset; i++){
+            newArray[i] = array[i - copyOffset];
         }
 
         head = copyStart;
-        tail = end - start;
+        tail = end + copyOffset;
         return newArray;
     }
 
@@ -112,15 +112,14 @@ public class Deque<Item> implements Iterable<Item> {
         int newLength = array.length % 2 == 0 ? array.length/2 : array.length/2 + 1;
         Item[] newArray = (Item[])new Object[newLength];
 
-        int copyStart = (newArray.length - (end - start)) / 2 + 1;
+        int copyStart = (newArray.length - (end - start)) / 2;
         int copyOffset = copyStart - start;
-
-        for(int i=copyStart; i <= end - start; i++){
-            newArray[i] = array[start+copyOffset];
+        for(int i=copyStart; i <= end + copyOffset; i++){
+            newArray[i] = array[i - copyOffset];
         }
 
         head = copyStart;
-        tail = end - start;
+        tail = end + copyOffset;
         return newArray;
     }
 
