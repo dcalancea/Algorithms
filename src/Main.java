@@ -1,32 +1,30 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Random;
-
 public class Main {
     public static void main(String[] args)   // test client (optional)
     {
         int count = Integer.parseInt(args[0]);
-        Deque<String> queue = new Deque<>();
+        RandomizedQueue<String> queue = new RandomizedQueue<>();
 
         System.out.println("Please enter: " + count + " numbers: ");
-        BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
         try {
 
             for (int i = 0; i < count; i++) {
-                queue.addFirst(buffer.readLine());
+                queue.enqueue(StdIn.readString());
             }
         } catch (Exception e) {
 
         }
 
-//        for (String i : randomQueue) {
-//            System.out.print(i + " ");
-//        }
-
-        for (int i = 0; i < count; i++) {
-            String element = queue.removeLast();
-            System.out.println(element);
+        for (String i : queue) {
+            for (String j : queue)
+            System.out.print(j + " ");
+            System.out.println();
         }
+
+//        int size = queue.size();
+//        for (int i = 0; i < size; i++) {
+//            String element = queue.removeLast();
+//            System.out.println(element);
+//        }
 
 
 //        PercolationStats ps = new PercolationStats(1000, 100);
