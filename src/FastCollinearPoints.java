@@ -4,13 +4,13 @@ public class FastCollinearPoints {
 
     }
 
-    public int numberOfSegments()        // the number of line segments
-    {
-
-    }
-
-    public LineSegment[] segments()                // the line segments
-    {
-
-    }
+//    public int numberOfSegments()        // the number of line segments
+//    {
+//
+//    }
+//
+//    public LineSegment[] segments()                // the line segments
+//    {
+//
+//    }
 }
