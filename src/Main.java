@@ -35,6 +35,8 @@ public class Main {
 //        System.out.println("stddev: " + ps.stddev());
 //        System.out.println("95% confidence interval: " + ps.confidenceLo() + " " + ps.confidenceHi());
 
+
+        //Collinear
         In in = new In(args[0]);
         int n = in.readInt();
         Point[] points = new Point[n];
@@ -44,8 +46,7 @@ public class Main {
             points[i] = new Point(x, y);
         }
 
-        StdDraw.setPenColor(Color.RED);
-
+        StdDraw.setPenColor(StdDraw.BLUE);
         // draw the points
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
@@ -56,11 +57,17 @@ public class Main {
         StdDraw.show();
 
         // print and draw the line segments
-        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        FastCollinearPoints collinear = new FastCollinearPoints(points);
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
         }
         StdDraw.show();
+
+//        StdDraw.setPenRadius(0.05);
+//        StdDraw.setPenColor(StdDraw.BLUE);
+//        StdDraw.point(0.5, 0.5);
+//        StdDraw.setPenColor(StdDraw.MAGENTA);
+//        StdDraw.line(0.2, 0.2, 0.8, 0.2);
     }
 }

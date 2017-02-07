@@ -34,9 +34,10 @@ public class BruteCollinearPoints {
                             collinearPoints[1] = points[j];
                             collinearPoints[2] = points[k];
                             collinearPoints[3] = points[l];
-                            java.util.Arrays.sort(collinearPoints, 0, 4, points[i].slopeOrder());
+                            java.util.Arrays.sort(collinearPoints, 0, 4);
 
-                            addLineSegment(new LineSegment(collinearPoints[0], collinearPoints[3]));
+                            LineSegment lineSegment = new LineSegment(collinearPoints[0], collinearPoints[3]);
+                            addLineSegment(lineSegment);
                         }
                     }
                 }
@@ -59,7 +60,6 @@ public class BruteCollinearPoints {
             returnSegments[i] = lineSegments[i];
         }
         lineSegments = returnSegments;
-
         return lineSegments;
     }
 
