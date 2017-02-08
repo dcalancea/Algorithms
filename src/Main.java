@@ -46,6 +46,16 @@ public class Main {
             points[i] = new Point(x, y);
         }
 
+//        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+//        points[2] = null;
+//        points[5] = null;
+//        LineSegment[] initialSegments = collinear.segments();
+//        int count1 = collinear.numberOfSegments();
+//        int count2 = collinear.numberOfSegments();
+//        int count3 = collinear.numberOfSegments();
+//        points[3] = null;
+//        LineSegment[] finalSegments = collinear.segments();
+
         StdDraw.setPenColor(StdDraw.BLUE);
         // draw the points
         StdDraw.enableDoubleBuffering();
@@ -63,11 +73,5 @@ public class Main {
             segment.draw();
         }
         StdDraw.show();
-
-//        StdDraw.setPenRadius(0.05);
-//        StdDraw.setPenColor(StdDraw.BLUE);
-//        StdDraw.point(0.5, 0.5);
-//        StdDraw.setPenColor(StdDraw.MAGENTA);
-//        StdDraw.line(0.2, 0.2, 0.8, 0.2);
     }
 }
