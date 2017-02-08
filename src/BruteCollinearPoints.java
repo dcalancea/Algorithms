@@ -10,7 +10,8 @@ public class BruteCollinearPoints {
             throw new NullPointerException();
         }
 
-        Point[] pointsClone = points.clone();
+        Point[] pointsClone = new Point[points.length];
+        System.arraycopy(points, 0, pointsClone, 0, points.length);
         java.util.Arrays.sort(pointsClone, points[0].slopeOrder());
 
         //check for duplicates
@@ -65,12 +66,17 @@ public class BruteCollinearPoints {
             segmentsRetrieved = true;
         }
 
+        LineSegment[] trimmedSegments = new LineSegment[lineSegmentIndex];
         LineSegment[] returnSegments = new LineSegment[lineSegmentIndex];
-        for(int i=0; i<lineSegmentIndex; i++){
-            returnSegments[i] = lineSegments[i];
-        }
-        lineSegments = returnSegments;
-        return returnSegments.clone();
+
+        System.arraycopy(lineSegments, 0, trimmedSegments, 0, lineSegmentIndex);
+        System.arraycopy(lineSegments, 0, returnSegments, 0, lineSegmentIndex);
+
+//        for(int i=0; i<lineSegmentIndex; i++){
+//            trimmedSegments[i] = lineSegments[i];
+//        }
+        lineSegments = trimmedSegments;
+        return returnSegments;
     }
 
     private void addLineSegment(LineSegment lineSegment){

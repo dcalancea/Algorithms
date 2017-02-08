@@ -1,13 +1,11 @@
 <component name="libraryTable">
   <library name="algs4">
     <CLASSES>
-      <root url="file://$USER_HOME$/algs4" />
+      <root url="jar://$PROJECT_DIR$/lib/algs4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$USER_HOME$/algs4" />
+      <root url="jar://$PROJECT_DIR$/lib/algs4.jar!/" />
     </SOURCES>
-    <jarDirectory url="file://$USER_HOME$/algs4" recursive="false" />
-    <jarDirectory url="file://$USER_HOME$/algs4" recursive="false" type="SOURCES" />
   </library>
 </component>
