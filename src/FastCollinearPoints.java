@@ -45,19 +45,19 @@ public class FastCollinearPoints {
             Point minPoint = pointsCopy[0];
             Point maxPoint = pointsCopy[0];
 
-            Point segmentStartPoint = pointsCopy[0];
-            double initialSlope = segmentStartPoint.slopeTo(pointsCopy[1]);
+            //Point segmentStartPoint = pointsCopy[0];
+            double slope = point.slopeTo(pointsCopy[0]);
             int segmentLength = 1;
 
-            for (int i = 1; i < points.length; i++) {
-                if (segmentStartPoint.slopeTo(points[i]) != initialSlope) {
-                    if (segmentLength >= 3) {
+            for (int i = 0; i < pointsCopy.length; i++) {
+                if (point.slopeTo(pointsCopy[i]) != slope) {
+                    if (segmentLength >= 4) {
                         mySegments = addElementToArray(mySegments, new MySegment(minPoint, maxPoint), mySegmentIndex++);
                     }
 
-                    segmentLength = 0;
-                    segmentStartPoint = points[i];
-                    minPoint = maxPoint = pointsCopy[i];
+                    segmentLength = 1;
+                    slope = point.slopeTo(pointsCopy[i]);
+                    minPoint = maxPoint = point;
                 }
                 segmentLength++;
 
