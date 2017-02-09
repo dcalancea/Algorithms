@@ -172,7 +172,7 @@ public class FastCollinearPoints {
             return new LineSegment[0];
         }
 
-        java.util.Arrays.sort(mySegments, 0, endIndex, new MySegmentComparator());
+        java.util.Arrays.sort(mySegments, 0, endIndex + 1, new MySegmentComparator());
 
         int index = 0;
         MySegment[] destinationArray = new MySegment[2];

@@ -1,4 +1,6 @@
-import java.awt.*;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
 
 public class Main {
     public static void main(String[] args)   // test client (optional)
@@ -47,14 +49,12 @@ public class Main {
         }
 
 //        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-//        points[2] = null;
-//        points[5] = null;
-//        LineSegment[] initialSegments = collinear.segments();
-//        int count1 = collinear.numberOfSegments();
-//        int count2 = collinear.numberOfSegments();
-//        int count3 = collinear.numberOfSegments();
-//        points[3] = null;
-//        LineSegment[] finalSegments = collinear.segments();
+//        int n1 = collinear.numberOfSegments();
+//        points[2].draw();
+//        LineSegment[] s1 = collinear.segments();
+//        points = new Point[12];
+//        int n2 = collinear.numberOfSegments();
+//        LineSegment[] s2 = collinear.segments();
 
         StdDraw.setPenColor(StdDraw.BLUE);
         // draw the points
