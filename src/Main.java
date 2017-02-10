@@ -38,40 +38,53 @@ public class Main {
 //        System.out.println("95% confidence interval: " + ps.confidenceLo() + " " + ps.confidenceHi());
 
 
-        //Collinear
+//        //Collinear
+//        In in = new In(args[0]);
+//        int n = in.readInt();
+//        Point[] points = new Point[n];
+//        for (int i = 0; i < n; i++) {
+//            int x = in.readInt();
+//            int y = in.readInt();
+//            points[i] = new Point(x, y);
+//        }
+//
+//        StdDraw.setPenColor(StdDraw.BLUE);
+//        // draw the points
+//        StdDraw.enableDoubleBuffering();
+//        StdDraw.setXscale(0, 32768);
+//        StdDraw.setYscale(0, 32768);
+//        for (Point p : points) {
+//            p.draw();
+//        }
+//        StdDraw.show();
+//
+//        // print and draw the line segments
+//        FastCollinearPoints collinear = new FastCollinearPoints(points);
+//        for (LineSegment segment : collinear.segments()) {
+//            StdOut.println(segment);
+//            segment.draw();
+//        }
+//        StdDraw.show();
+
+        // create initial board from file
         In in = new In(args[0]);
         int n = in.readInt();
-        Point[] points = new Point[n];
-        for (int i = 0; i < n; i++) {
-            int x = in.readInt();
-            int y = in.readInt();
-            points[i] = new Point(x, y);
-        }
+        int[][] blocks = new int[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                blocks[i][j] = in.readInt();
+        Board initial = new Board(blocks);
 
-//        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
-//        int n1 = collinear.numberOfSegments();
-//        points[2].draw();
-//        LineSegment[] s1 = collinear.segments();
-//        points = new Point[12];
-//        int n2 = collinear.numberOfSegments();
-//        LineSegment[] s2 = collinear.segments();
+        // solve the puzzle
+        Solver solver = new Solver(initial);
 
-        StdDraw.setPenColor(StdDraw.BLUE);
-        // draw the points
-        StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
-        for (Point p : points) {
-            p.draw();
+        // print solution to standard output
+        if (!solver.isSolvable())
+            StdOut.println("No solution possible");
+        else {
+            StdOut.println("Minimum number of moves = " + solver.moves());
+            for (Board board : solver.solution())
+                StdOut.println(board);
         }
-        StdDraw.show();
-
-        // print and draw the line segments
-        FastCollinearPoints collinear = new FastCollinearPoints(points);
-        for (LineSegment segment : collinear.segments()) {
-            StdOut.println(segment);
-            segment.draw();
-        }
-        StdDraw.show();
     }
 }
