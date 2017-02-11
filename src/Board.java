@@ -1,9 +1,11 @@
-import java.util.ArrayList;
+import java.util.Stack;
 
 public class Board {
     private int[][] blocks;
     private int zeroPosI;
     private int zeroPosJ;
+    private int manhattan = -1;
+    private int hamming = -1;
 
     public Board(int[][] blocks)           // construct a board from an n-by-n array of blocks
     {
@@ -28,39 +30,49 @@ public class Board {
 
     public int hamming()                   // number of blocks out of place
     {
+        if(hamming == -1){
+            hamming = computeHamming();
+        }
+        return hamming;
+    }
+
+    private int computeHamming(){
         int count = 0;
+        int expectedValue = 1;
         int size = blocks.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if ((blocks[i][j] == 0 && i == size - 1 && j == i)
-                        || (blocks[i][j] == (i * size) + j + 1)) {
-                    continue;
+                if (blocks[i][j] != 0 && blocks[i][j] != expectedValue) {
+                    count++;
                 }
-                count++;
+                expectedValue++;
             }
+
         }
         return count;
     }
 
     public int manhattan()                 // sum of Manhattan distances between blocks and goal
     {
+        if(manhattan == -1){
+            manhattan = computeManhattan();
+        }
+
+        return manhattan;
+    }
+
+    private int computeManhattan(){
         int count = 0;
         int size = blocks.length;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if ((blocks[i][j] == 0 && i == size - 1 && j == i)
-                        || (blocks[i][j] == (i * size) + j + 1)) {
-                    continue;
-                }
-                int targetI, targetJ = 0;
-                if (blocks[i][j] == 0) {
-                    targetI = targetJ = size - 1;
-                } else {
-                    targetI = java.lang.Math.abs((blocks[i][j] / size) - i);
-                    targetJ = java.lang.Math.abs((blocks[i][j] % size) - 1 - j);
+                if (blocks[i][j] != 0 && blocks[i][j] != (i * size) + j + 1) {
+                    int deltaI = java.lang.Math.abs(((blocks[i][j] - 1) / size) - i);
+                    int deltaJ = java.lang.Math.abs(((blocks[i][j] - 1) % size) - j);
+
+                    count += deltaI + deltaJ;
                 }
 
-                count += targetI + targetJ;
             }
         }
         return count;
@@ -68,7 +80,17 @@ public class Board {
 
     public boolean isGoal()                // is this board the goal board?
     {
-        return zeroPosI == blocks.length - 1 && zeroPosJ == blocks.length - 1;
+        int n = blocks.length;
+        int expectedIndex = 1;
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                if(blocks[i][j] != 0 && blocks[i][j] != expectedIndex){
+                    return false;
+                }
+                expectedIndex++;
+            }
+        }
+        return true;
     }
 
     public Board twin()                    // a board that is obtained by exchanging any pair of blocks
@@ -102,28 +124,32 @@ public class Board {
 
     public Iterable<Board> neighbors()     // all neighboring boards
     {
-        ArrayList<Board> boards = new ArrayList<>();
+        Stack<Board> boards = new Stack<>();
         if (zeroPosI != 0) {
             int[][] neighbourBlock = copyArray(blocks);
-            neighbourBlock[zeroPosI][zeroPosJ] = blocks[zeroPosI - 1][zeroPosJ];
+            neighbourBlock[zeroPosI][zeroPosJ] = neighbourBlock[zeroPosI - 1][zeroPosJ];
+            neighbourBlock[zeroPosI - 1][zeroPosJ] = 0;
             boards.add(new Board(neighbourBlock));
         }
 
         if (zeroPosI != blocks.length - 1) {
             int[][] neighbourBlock = copyArray(blocks);
-            neighbourBlock[zeroPosI][zeroPosJ] = blocks[zeroPosI + 1][zeroPosJ];
+            neighbourBlock[zeroPosI][zeroPosJ] = neighbourBlock[zeroPosI + 1][zeroPosJ];
+            neighbourBlock[zeroPosI + 1][zeroPosJ] = 0;
             boards.add(new Board(neighbourBlock));
         }
 
         if (zeroPosJ != 0) {
             int[][] neighbourBlock = copyArray(blocks);
-            neighbourBlock[zeroPosI][zeroPosJ] = blocks[zeroPosI][zeroPosJ - 1];
+            neighbourBlock[zeroPosI][zeroPosJ] = neighbourBlock[zeroPosI][zeroPosJ - 1];
+            neighbourBlock[zeroPosI][zeroPosJ - 1] = 0;
             boards.add(new Board(neighbourBlock));
         }
 
         if (zeroPosJ != blocks.length - 1) {
             int[][] neighbourBlock = copyArray(blocks);
-            neighbourBlock[zeroPosI][zeroPosJ] = blocks[zeroPosI][zeroPosJ + 1];
+            neighbourBlock[zeroPosI][zeroPosJ] = neighbourBlock[zeroPosI][zeroPosJ + 1];
+            neighbourBlock[zeroPosI][zeroPosJ + 1] = 0;
             boards.add(new Board(neighbourBlock));
         }
 
@@ -133,14 +159,14 @@ public class Board {
     public String toString()               // string representation of this board (in the output format specified below)
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("%d\n", blocks.length));
+        sb.append(String.format("%s\n", blocks.length));
 
         int n = blocks.length;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                sb.append(blocks[i][j]);
+                sb.append(String.format("%3s", blocks[i][j]));
                 if (j < n - 1) {
-                    sb.append('\n');
+                    sb.append(' ');
                 }
             }
             sb.append('\n');
@@ -157,11 +183,9 @@ public class Board {
         int n = source.length;
         int[][] result = new int[n][n];
 
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - 1; j++) {
-                if (i != zeroPosI && j != zeroPosJ && i + 1 != zeroPosI && j + 1 != zeroPosJ) {
-                    result[i][j] = source[i][j];
-                }
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                result[i][j] = source[i][j];
             }
         }
         return result;
@@ -170,9 +194,9 @@ public class Board {
     private void mutateArray(int[][] source) {
         int n = source.length;
 
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n; i++) {
             for (int j = 0; j < n - 1; j++) {
-                if (i != zeroPosI && j != zeroPosJ && i + 1 != zeroPosI && j + 1 != zeroPosJ) {
+                if (source[i][j] != 0 && source[i][j+1] != 0) {
                     int temp = source[i][j];
                     source[i][j] = source[i][j + 1];
                     source[i][j + 1] = temp;
