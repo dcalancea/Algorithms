@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class PointSET {
-    Set<Point2D> pointSet = new TreeSet<>();
+    private Set<Point2D> pointSet = new TreeSet<>();
 
     public PointSET()                               // construct an empty set of points
     {
