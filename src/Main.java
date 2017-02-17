@@ -1,6 +1,12 @@
+import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args)   // test client (optional)
@@ -67,25 +73,56 @@ public class Main {
 //        StdDraw.show();
 
         // create initial board from file
-        In in = new In(args[0]);
-        int n = in.readInt();
-        int[][] blocks = new int[n][n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++)
-                blocks[i][j] = in.readInt();
-        Board initial = new Board(blocks);
-        initial.manhattan();
+//        In in = new In(args[0]);
+//        int n = in.readInt();
+//        int[][] blocks = new int[n][n];
+//        for (int i = 0; i < n; i++)
+//            for (int j = 0; j < n; j++)
+//                blocks[i][j] = in.readInt();
+//        Board initial = new Board(blocks);
+//        initial.manhattan();
+//
+//        // solve the puzzle
+//        Solver solver = new Solver(initial);
+//
+//        // print solution to standard output
+//        if (!solver.isSolvable())
+//            StdOut.println("No solution possible");
+//        else {
+//            StdOut.println("Minimum number of moves = " + solver.moves());
+//            for (Board board : solver.solution())
+//                StdOut.println(board);
+//        }
 
-        // solve the puzzle
-        Solver solver = new Solver(initial);
+        KdTree set = new KdTree();
+        Point2D[] points = (Point2D[])Arrays.asList (
+            new Point2D(0.1, 0.1),
+            new Point2D(0.2, 0.2),
+            new Point2D(0.3, 0.3),
+            new Point2D(0.4, 0.3),
+            new Point2D(0.5, 0.3),
+            new Point2D(0.6, 0.3),
+            new Point2D(0.7, 0.3),
+            new Point2D(0.6, 0.4),
+            new Point2D(0.5, 0.4),
+            new Point2D(0.3, 0.4)
+        ).toArray();
 
-        // print solution to standard output
-        if (!solver.isSolvable())
-            StdOut.println("No solution possible");
-        else {
-            StdOut.println("Minimum number of moves = " + solver.moves());
-            for (Board board : solver.solution())
-                StdOut.println(board);
+        for(Point2D point: points){
+            set.insert(point);
         }
+        set.insert(points[9]);
+        Random r = new Random();
+        for(int i=0;i<1000; i++){
+            int index = r.nextInt(points.length);
+            set.insert(points[index]);
+            if(set.size() > points.length){
+                int x = 0;
+            }
+        }
+
+        RectHV rect = new RectHV(0,0, 0.31, 0.31);
+        Iterable<Point2D> list = set.range(rect);
+        StdOut.println(set.size());
     }
 }

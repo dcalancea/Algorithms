@@ -24,6 +24,11 @@ public class KdTree {
 
     public void insert(Point2D p)              // add the point to the set (if it is not already in the set)
     {
+        if (contains(p)) {
+            return;
+        }
+
+        size++;
         if (isEmpty()) {
             root = new Node(p, Direction.VERTICAL);
             return;
@@ -38,7 +43,7 @@ public class KdTree {
             nodeToAdd.direction = Direction.HORIZONTAL;
         }
 
-        if (parentNode.compareTo(nodeToAdd) <= 0) {
+        if (parentNode.compareTo(nodeToAdd) >= 0) {
             parentNode.leftNode = nodeToAdd;
         } else {
             parentNode.rightNode = nodeToAdd;
@@ -48,12 +53,17 @@ public class KdTree {
     public boolean contains(Point2D p)            // does the set contain point p?
     {
         Node current = root;
+        if (current == null) {
+            return false;
+        }
+
         while (current.point.compareTo(p) != 0) {
-            if (p.compareTo(current.point) < 0) {
-                current = current.leftNode;
-            } else {
-                current = current.rightNode;
-            }
+            current = getNextSearchNode(current, p);
+//            if (p.compareTo(current.point) < 0) {
+//                current = current.leftNode;
+//            } else {
+//                current = current.rightNode;
+//            }
 
             if (current == null) {
                 return false;
@@ -89,7 +99,7 @@ public class KdTree {
 
     private Node getParentNode(Node currentParent, Node node) {
         Node foundNode;
-        if (currentParent.compareTo(node) <= 0) {
+        if (currentParent.compareTo(node) >= 0) {
             foundNode = currentParent.leftNode;
         } else {
             foundNode = currentParent.rightNode;
@@ -123,16 +133,36 @@ public class KdTree {
         }
     }
 
+    private Node getNextSearchNode(Node currentNode, Point2D searchPoint) {
+        if (currentNode.direction == Direction.VERTICAL) {
+            if (searchPoint.x() <= currentNode.point.x()) {
+                return currentNode.leftNode;
+            } else {
+                return currentNode.rightNode;
+            }
+        } else {
+            if (searchPoint.y() <= currentNode.point.y()) {
+                return currentNode.leftNode;
+            } else {
+                return currentNode.rightNode;
+            }
+        }
+    }
+
     private void searchRange(Node currentNode, ArrayList<Point2D> foundNodes, RectHV rect) {
+        if(currentNode == null){
+            return;
+        }
+
         if (rect.contains(currentNode.point)) {
             foundNodes.add(currentNode.point);
         }
 
-        if (isLeftValid(currentNode.leftNode, rect)) {
+        if (isLeftValid(currentNode, rect)) {
             searchRange(currentNode.leftNode, foundNodes, rect);
         }
 
-        if (isRightValid(currentNode.rightNode, rect)) {
+        if (isRightValid(currentNode, rect)) {
             searchRange(currentNode.rightNode, foundNodes, rect);
         }
     }
@@ -143,21 +173,29 @@ public class KdTree {
         }
 
         if (current.direction == Direction.VERTICAL) {
-            return current.point.x() - rect.xmin() < 0;
+            return current.point.x() - rect.xmin() >= 0;
         } else {
-            return current.point.y() - rect.ymin() < 0;
+            return current.point.y() - rect.ymin() >= 0;
         }
     }
 
     private boolean isRightValid(Node current, RectHV rect) {
+        if (current == null) {
+            return false;
+        }
+
         if (current.direction == Direction.VERTICAL) {
-            return current.point.x() - rect.xmax() > 0;
+            return current.point.x() - rect.xmax() < 0;
         } else {
-            return current.point.y() - rect.ymax() > 0;
+            return current.point.y() - rect.ymax() < 0;
         }
     }
 
     private Point2D findNearest(Node currentNode, Point2D currentMin, Point2D targetPoint) {
+        if(currentNode == null){
+            return currentMin;
+        }
+        
         Point2D min = currentMin;
 
         if (currentNode.point.distanceTo(targetPoint) < currentMin.distanceTo(targetPoint)) {

@@ -58,7 +58,7 @@ public class PointSET {
         Point2D nearest = pointSet.iterator().next();
 
         for (Point2D point : pointSet) {
-            if (p.compareTo(point) < nearest.compareTo(point)) {
+            if (point.distanceTo(p) < nearest.distanceTo(p)) {
                 nearest = point;
             }
         }
